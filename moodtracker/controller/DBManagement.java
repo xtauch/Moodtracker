@@ -77,9 +77,9 @@ public class DBManagement {
         return bdd.delete(TABLE_NAME, COL_0 + " = " +id, null);
     }
 
-    public Comment getComment(String comment){
+    public Comment getComment(){
         //Récupère dans un Cursor les valeur correspondant à un commentaire contenu dans la BDD (ici on sélectionne le commentaire d'aujourd'hui)
-        Cursor c = bdd.query(TABLE_NAME, new String[] {COL_0}, COL_8 + " LIKE \"" + comment +"\"", null, null, null, null);
+        Cursor c = bdd.query(TABLE_NAME, new String[] {COL_0}, COL_8, null, null, null, null);
         return cursorToComment(c);
     }
 
@@ -98,7 +98,6 @@ public class DBManagement {
         comment.setComment(c.getString(NUM_COL_8));
         //On ferme le cursor
         c.close();
-
         //On retourne le commentaire
         return comment;
     }

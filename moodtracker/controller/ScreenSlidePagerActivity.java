@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 
 import com.example.youpiman.moodtracker.R;
-import com.example.youpiman.moodtracker.model.SQLiteDataBaseHelper;
 import com.example.youpiman.moodtracker.view.Disappointed;
 import com.example.youpiman.moodtracker.view.Happy;
 import com.example.youpiman.moodtracker.view.Normal;
@@ -27,14 +26,13 @@ public class ScreenSlidePagerActivity extends FragmentActivity{
     //Pager adapter
     private PagerAdapter mPagerAdapter;
 
-    SQLiteDataBaseHelper db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.screen_slide);
 
-        db = new SQLiteDataBaseHelper(this);
         mSharedPreferences = getPreferences(MODE_PRIVATE);
 
         List fragments = new Vector();

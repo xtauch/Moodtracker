@@ -2,6 +2,7 @@ package com.example.youpiman.moodtracker.view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.example.youpiman.moodtracker.R;
 import com.example.youpiman.moodtracker.controller.Comment;
 import com.example.youpiman.moodtracker.controller.DBManagement;
 import com.example.youpiman.moodtracker.controller.History;
+import com.example.youpiman.moodtracker.model.SQLiteDataBaseHelper;
 
 
 import static com.example.youpiman.moodtracker.controller.ScreenSlidePagerActivity.PREF_KEY_COMMENT;
@@ -28,8 +30,7 @@ public class Disappointed extends Fragment implements View.OnClickListener {
     private ImageButton HistoryButton;
     private ImageButton NoteButton;
     public static Comment mComment = new Comment();
-    DBManagement mDBManagement = new DBManagement(getContext());
-
+    DBManagement mDBManagement = new DBManagement(getActivity());
 
     @Override
     public void onClick(View v) {
@@ -54,16 +55,26 @@ public class Disappointed extends Fragment implements View.OnClickListener {
 
                 mSharedPreferences.edit().putString(PREF_KEY_COMMENT, Disappointed.mComment.getComment()).apply();
                 String prefComment = mSharedPreferences.getString(PREF_KEY_COMMENT, null);
-                if (null != prefComment){
+                if ( prefComment != null){
                     input.setText(prefComment);
+                }
+
+                if (mComment != null){
+                    mDBManagement.open();
+                    input.setText(mDBManagement.getComment().toString());
+                    mDBManagement.close();
+
                 }
                 builder.setTitle("Commentaire")
                         .setView(input)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                mDBManagement.open();
                                 String comment = input.getText().toString();
                                 mComment.setComment(comment);
+                                mDBManagement.insertComment(mComment);
+                                mDBManagement.close();
 
                             }
                         })
